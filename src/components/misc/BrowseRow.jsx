@@ -1,8 +1,17 @@
 import { Link } from "react-router-dom";
+import { getGenres } from "../../genres/genres";
 import useFetching from "../../hooks/useFetching";
 import CardLoading from "../loading/CardLoading";
 
-const Card = ({ imgUrl, title, releaseDate, rating, id, mediaType }) => {
+const Card = ({
+  imgUrl,
+  title,
+  releaseDate,
+  rating,
+  id,
+  mediaType,
+  genreIDs,
+}) => {
   let cardUrl = `/movie/${id}-${title.toLowerCase().split(" ").join("-")}`;
   if (mediaType === "tv") {
     cardUrl = `/tv/${id}-${title.toLowerCase().split(" ").join("-")}`;
@@ -10,6 +19,8 @@ const Card = ({ imgUrl, title, releaseDate, rating, id, mediaType }) => {
 
   const baseUrl = "https://www.themoviedb.org/t/p";
   const imgSmall = baseUrl + `/w300${imgUrl}`;
+  let genreList = getGenres(genreIDs, mediaType);
+
   return (
     <Link to={cardUrl} className="w-full relative group">
       <img
@@ -18,23 +29,27 @@ const Card = ({ imgUrl, title, releaseDate, rating, id, mediaType }) => {
         alt="movie"
         loading="lazy"
       />
-      {/* <RatingBadge rating={rating} classes="relative bottom-4 left-2" /> */}
       <div className="p-2 relative">
         <p className="font-semibold text-sm hover:text-indigo-500 transition-colors">
           {title}
         </p>
-        {/* <p className="text-gray-500">{releaseDate}</p> */}
       </div>
-      <div className="group-hover:block group-hover:opacity-100 opacity-5 group-hover:transition-opacity hidden w-[150%] h-32 dark:bg-gray-900 bg-gray-100 shadow px-6 py-4 rounded-xl absolute left-full top-0 ml-4 mt-4 z-50 text-white">
-        <p className="text-lg dark:text-gray-400 text-gray-800">{releaseDate}</p>
-        <p className="text-sm mt-1 dark:text-gray-400 text-gray-700">{mediaType}</p>
-        <ul className="flex gap-3 mt-4">
-          <li className="px-3 py-1 bg-indigo-700 rounded-full text-xs">
-            Action
-          </li>
-          <li className="px-3 py-1 bg-indigo-700 rounded-full text-xs">
-            Comedy
-          </li>
+      <div className="group-hover:block hidden w-[150%] h-min dark:bg-gray-900 bg-gray-100 shadow px-6 py-4 rounded-xl absolute left-full top-0 ml-4 mt-4 z-50 text-white">
+        <p className="text-lg dark:text-gray-400 text-gray-800">
+          {releaseDate}
+        </p>
+        <p className="text-sm mt-1 dark:text-gray-400 text-gray-700">
+          {mediaType}
+        </p>
+        <ul className="flex gap-3 mt-4 flex-wrap">
+          {genreList.map((genre) => (
+            <li
+              className="px-3 py-1 bg-indigo-700 rounded-full text-xs"
+              key={genre}
+            >
+              {genre}
+            </li>
+          ))}
         </ul>
       </div>
     </Link>
@@ -49,17 +64,17 @@ const BrowseRow = ({ fetchUrl, title }) => {
     <div className="my-10">
       <div className="flex justify-between">
         <h5 className="font-semibold text-gray-600 text-2xl  mb-4">{title}</h5>
-        <button className="font-semibold text-sm text-gray-500">
+        <Link to="/" className="font-semibold text-sm text-gray-500">
           View all
-        </button>
+        </Link>
       </div>
-      {/* grid xl:grid-cols-6 2xl:grid-cols-7 md:grid-cols-5 gap-8 */}
-      <div className="w-full grid gap-8 2xl:grid-cols-6 xl:grid-cols-5 grid-cols-4">
+      <div className="w-full grid gap-8 2xl:grid-cols-5 xl:grid-cols-5 grid-cols-4">
         {isLoading ? (
-          [...Array(5)].map((e, i) => <CardLoading key={i} />)
+          [...Array(10)].map((e, i) => <CardLoading key={i} />)
         ) : movies ? (
           movies.map((movie, i) => (
             <Card
+              genreIDs={movie.genre_ids}
               key={movie.id}
               imgUrl={movie.poster_path}
               title={movie.title || movie.name}

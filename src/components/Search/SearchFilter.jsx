@@ -4,7 +4,7 @@ const SearchFilter = ({ query }) => {
   const navLink = (type) => `/search/${type}?query=${query}`;
 
   return (
-    <div className="w-1/5 flex flex-col rounded-lg border dark:border-gray-900 dark:bg-gray-900 border-gray-300 h-80 overflow-hidden sticky top-20">
+    <div className="flex flex-col rounded-lg border dark:border-gray-900 dark:bg-gray-900 border-gray-300 h-80 overflow-hidden sticky top-20">
       <p className="p-4 h-14 bg-indigo-700 text-white font-bold text-lg ">
         Search results
       </p>
@@ -14,7 +14,6 @@ const SearchFilter = ({ query }) => {
           to={navLink("movie")}
         >
           Movies
-          
         </NavLink>
 
         <NavLink
@@ -22,7 +21,6 @@ const SearchFilter = ({ query }) => {
           to={navLink("tv")}
         >
           TV Shows
-          
         </NavLink>
 
         <NavLink
@@ -30,7 +28,6 @@ const SearchFilter = ({ query }) => {
           to={navLink("person")}
         >
           People
-          
         </NavLink>
 
         <NavLink
@@ -38,7 +35,6 @@ const SearchFilter = ({ query }) => {
           to={navLink("company")}
         >
           Companies
-          
         </NavLink>
 
         <NavLink
@@ -46,7 +42,6 @@ const SearchFilter = ({ query }) => {
           to={navLink("collection")}
         >
           Collections
-          
         </NavLink>
       </div>
     </div>
