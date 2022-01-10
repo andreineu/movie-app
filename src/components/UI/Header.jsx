@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = ({ themeHandlerOn, themeHandlerOff }) => {
   const [isValid, setIsValid] = useState(true);
@@ -28,15 +28,12 @@ const Header = ({ themeHandlerOn, themeHandlerOff }) => {
     <header className=" fixed inset-x-0 top-0 bg-indigo-900 dark:bg-gray-800 text-white z-50 shadow-2xl ">
       <div className="site-container flex justify-between h-16 items-center">
         <div className="flex items-center gap-10">
-          <NavLink to="/" className="logo text-2xl font-bold">
+          <Link to="/" className="logo text-2xl font-bold">
             Movie-app
-          </NavLink>
+          </Link>
           <ul className="flex gap-10 font-semibold">
             <li>
-              <NavLink to="/browse">Browse</NavLink>
-            </li>
-            <li>
-              <NavLink to="/">Tv Shows</NavLink>
+              <Link to="/browse">Browse</Link>
             </li>
           </ul>
         </div>
