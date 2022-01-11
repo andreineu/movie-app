@@ -1,6 +1,6 @@
 // import { useEffect, useState } from "react";
 import "./App.css";
-import Header from "./components/UI/Header";
+import Header from "./components/UI/Header/Header";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MoviePage from "./pages/MoviePage";
@@ -14,19 +14,11 @@ import Browse from "./pages/Browse";
 import NotFoundPage from "./pages/NotFoundPage";
 // dark bg-gray-800 text-white
 function App() {
-  const darkThemeOff = () => {
-    let element = document.getElementById("root");
-    element.classList.remove("dark");
-  }
-  const darkThemeOn = () => {
-    let element = document.getElementById("root");
-    element.classList.add("dark");
-  }
   return (
     <div className="site-wrapper dark:bg-gray-800 dark:text-gray-200">
       <BrowserRouter>
         <ScrollToTop>
-          <Header themeHandlerOn={darkThemeOn} themeHandlerOff={darkThemeOff}/>
+          <Header />
           <div className="content-wrapper mt-16">
             {/* <Movie /> */}
             <Routes>

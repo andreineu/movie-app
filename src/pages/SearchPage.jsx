@@ -10,7 +10,7 @@ const SearchPage = () => {
   const location = useLocation();
 
   const URLParams = new URLSearchParams(location.search);
-  // let query = URLParams.get("query");
+
   let page = URLParams.get("page");
   let type = location.pathname.slice(8);
   let [query, setQuery] = useState(URLParams.get("query"));
@@ -26,11 +26,11 @@ const SearchPage = () => {
   }, [searchValue]);
   const [data, loading, error] = useSearch(type, query, page);
   const { total_pages } = data;
-  // onClick={()=>console.log(URLParams.toString())}
+
   return (
     <div className="site-container py-4">
       <div className="flex gap-8">
-        <div className="w-1/5">
+        <div className="w-52">
           <div className="mb-4 border dark:border-none">
             <label className="flex dark:bg-gray-700 rounded items-center px-2">
               <svg

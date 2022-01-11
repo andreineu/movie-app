@@ -1,23 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const FilterSearch = () => {
-  const [validated, setValidated] = useState(true);
   const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
 
-  const classes = validated ? "" : "border-red-500 dark:border-red-900";
-  useEffect(() => {
-    if (searchInput.length > 0) {
-      setValidated(true);
-    }
-  }, [searchInput]);
   const submitHandler = (event) => {
     event.preventDefault();
-    if (searchInput === "") {
-      setValidated(false);
-      return;
-    }
+    if (searchInput === "") return;
     const encoded = encodeURI(searchInput);
     navigate(`/search/movie?query=${encoded}`);
   };

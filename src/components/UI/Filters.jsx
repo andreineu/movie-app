@@ -1,5 +1,3 @@
-import requests from "../../API/requests";
-import useFetching from "../../hooks/useFetching";
 import FilterSearch from "./FilterSearch";
 
 const Filters = () => {

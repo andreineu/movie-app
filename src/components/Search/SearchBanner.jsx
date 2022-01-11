@@ -2,30 +2,29 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SearchBanner = () => {
-  const [validated, setValidated] = useState(true)
-  const [searchInput, setSearchInput] = useState('')
-  const navigate = useNavigate()
+  const [validated, setValidated] = useState(true);
+  const [searchInput, setSearchInput] = useState("");
+  const navigate = useNavigate();
 
-  const classes = validated ? '' : 'border-red-500 dark:border-red-900'
-  useEffect(()=>{
+  const classes = validated ? "" : "border-red-500 dark:border-red-800";
+  useEffect(() => {
     if (searchInput.length > 0) {
-      setValidated(true)
+      setValidated(true);
     }
-  },[searchInput])
+  }, [searchInput]);
 
   const inputChangeHandler = (event) => {
-    setSearchInput(event.target.value)
-  }
+    setSearchInput(event.target.value);
+  };
   const submitHandler = (event) => {
-    event.preventDefault()
-    if (searchInput === '') {
-      setValidated(false)
-      return 
+    event.preventDefault();
+    if (searchInput === "") {
+      setValidated(false);
+      return;
     }
-    const encoded = encodeURI(searchInput)
-    navigate(`/search/movie?query=${encoded}`)
-
-  }
+    const encoded = encodeURI(searchInput);
+    navigate(`/search/movie?query=${encoded}`);
+  };
   return (
     <div className="mb-4 -mx-8 bg-gray-700 h-[400px] relative">
       <div className="px-10 absolute bottom-20 w-full">
@@ -34,7 +33,10 @@ const SearchBanner = () => {
           Explore millions of movies and tv shows
         </p>
         <form className="my-10 relative" onSubmit={submitHandler}>
-          <input onChange={inputChangeHandler} value={searchInput}
+          <input
+            onClick={() => setValidated(true)}
+            onChange={inputChangeHandler}
+            value={searchInput}
             className={`${classes} dark:bg-gray-800 dark:border-gray-800 border-2 w-full px-6 h-12 rounded-full focus:outline-none shadow-xl`}
             type="text"
             placeholder="Search..."
@@ -44,7 +46,6 @@ const SearchBanner = () => {
             type="submit"
             value="Search"
           />
-          {/* { !validated && <p className="absolute text-white px-6">enter </p> } */}
         </form>
       </div>
     </div>

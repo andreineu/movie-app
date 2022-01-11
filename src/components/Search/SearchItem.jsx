@@ -3,15 +3,16 @@ import { useNavigate } from "react-router";
 const SearchItem = ({ searchItem, mediaType }) => {
   const baseUrl = "https://www.themoviedb.org/t/p/w154";
 
-  let cardUrl = `/movie/${searchItem.id}`
-  if (mediaType === "tv") { cardUrl = `/tv/${searchItem.id}`}
-  const navigate = useNavigate()
-  const navigateHandler = () => {
-    navigate(cardUrl)
+  let cardUrl = `/movie/${searchItem.id}`;
+  if (mediaType === "tv") {
+    cardUrl = `/tv/${searchItem.id}`;
   }
+  const navigate = useNavigate();
+  const navigateHandler = () => {
+    navigate(cardUrl);
+  };
   return (
     <div
-      // onClick={()=>console.log(searchItem)}
       key={searchItem.id}
       className="flex w-full h-[231px] shadow border border-gray-300 dark:border-gray-900 dark:bg-gray-900 rounded-lg overflow-hidden"
     >
@@ -39,8 +40,11 @@ const SearchItem = ({ searchItem, mediaType }) => {
         </div>
       )}
 
-      <div className="p-4 ">          
-        <h4 className="font-bold text-xl hover:text-gray-500 cursor-pointer transition-colors" onClick={navigateHandler}>
+      <div className="p-4 ">
+        <h4
+          className="font-bold text-xl hover:text-gray-500 cursor-pointer transition-colors"
+          onClick={navigateHandler}
+        >
           {searchItem.title ? searchItem.title : searchItem.name}
         </h4>
         <span className="text-gray-500 text-sm">
