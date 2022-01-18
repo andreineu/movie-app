@@ -14,6 +14,11 @@ https://movie-app-deploy.herokuapp.com/
 
 [TMDB API](https://www.themoviedb.org/)
 
+## TODO
+- dedicated actor page
+- mobile and tablet design
+- add more search filters
+
 
 ## Features
 
