@@ -7,6 +7,7 @@ const SearchBanner = () => {
   const navigate = useNavigate();
 
   const classes = validated ? "" : "border-red-500 dark:border-red-800";
+
   useEffect(() => {
     if (searchInput.length > 0) {
       setValidated(true);
@@ -16,6 +17,7 @@ const SearchBanner = () => {
   const inputChangeHandler = (event) => {
     setSearchInput(event.target.value);
   };
+
   const submitHandler = (event) => {
     event.preventDefault();
     if (searchInput === "") {
@@ -25,6 +27,7 @@ const SearchBanner = () => {
     const encoded = encodeURI(searchInput);
     navigate(`/search/movie?query=${encoded}`);
   };
+
   return (
     <div className="mb-4 -mx-8 bg-gray-700 h-[400px] relative">
       <div className="px-10 absolute bottom-20 w-full">

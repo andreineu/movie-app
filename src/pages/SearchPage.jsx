@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { useLocation } from "react-router";
 
 import LoadingSpiner from "../components/loading/LoadingSpinner";
-import Pagination from "../components/agination/Pagination";
+import Pagination from "../components/pagination/Pagination";
 import SearchFilter from "../components/search/SearchFilter";
 import SearchItem from "../components/search/SearchItem";
 

@@ -1,14 +1,15 @@
 import ShowDetails from "./ShowDetails";
 
-const Show = ({ show }) => {
-  const baseUrl = "https://www.themoviedb.org/t/p/original";
+import { baseURL } from "../../api";
 
+const Show = ({ show }) => {
   return (
     <div
       onClick={() => console.log(show)}
       className="w-full relative"
       style={{
-        backgroundImage: `url(${baseUrl + show.backdrop_path})`,
+        backgroundImage: `url(${baseURL}original/${show.backdrop_path})`,
+
         backgroundPosition: "right -200px top",
         backgroundSize: "cover",
       }}
