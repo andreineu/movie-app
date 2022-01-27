@@ -1,31 +1,32 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useLocation } from "react-router";
-import Loading from "../components/loading/Loading";
-import Pagination from "../components/Pagination/Pagination";
-import SearchFilter from "../components/Search/SearchFilter";
-import SearchItem from "../components/Search/SearchItem";
-import useSearch from "../hooks/useSearch";
+
+import LoadingSpiner from "../components/loading/LoadingSpinner";
+import Pagination from "../components/agination/Pagination";
+import SearchFilter from "../components/search/SearchFilter";
+import SearchItem from "../components/search/SearchItem";
+
+import useFetch from "../hooks/useFetch";
+import { serviceGetSearch } from "../services";
 
 const SearchPage = () => {
   const location = useLocation();
 
   const URLParams = new URLSearchParams(location.search);
 
-  let page = URLParams.get("page");
-  let type = location.pathname.slice(8);
-  let [query, setQuery] = useState(URLParams.get("query"));
-  let [searchValue, setSearchValue] = useState(query);
+  const page = URLParams.get("page");
+  const mediaType = location.pathname.slice(8);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (searchValue) {
-        setQuery(searchValue);
-      }
-    }, 1000);
-    return () => clearTimeout(timeout);
-  }, [searchValue]);
-  const [data, loading, error] = useSearch(type, query, page);
-  const { total_pages } = data;
+  const query = URLParams.get("query");
+  const [searchValue, setSearchValue] = useState(query);
+
+  const searchFn = useCallback(
+    () => serviceGetSearch(mediaType, query, page),
+    [mediaType, query, page]
+  );
+
+  const { data, error, loading } = useFetch(searchFn);
+  const total_pages = data?.total_pages;
 
   return (
     <div className="site-container py-4">
@@ -56,21 +57,16 @@ const SearchPage = () => {
           <SearchFilter query={query} />
         </div>
         <div className="flex flex-col space-y-4 w-4/5 ">
-          {loading ? (
-            <Loading />
-          ) : error ? (
-            <h1>Error</h1>
-          ) : data.results.length === 0 ? (
-            <h1>No results found</h1>
-          ) : (
-            data.results.map((searchItem) => (
-              <SearchItem
-                key={searchItem.id}
-                searchItem={searchItem}
-                mediaType={type}
-              />
-            ))
-          )}
+          {loading && <LoadingSpiner />}
+          {error && <h1>Error</h1>}
+          {data?.results?.length === 0 && <h1>No results found</h1>}
+          {data?.results?.map((searchItem) => (
+            <SearchItem
+              key={searchItem.id}
+              searchItem={searchItem}
+              mediaType={mediaType}
+            />
+          ))}
           <Pagination totalPages={total_pages} />
         </div>
       </div>

@@ -1,5 +1,8 @@
-import requests from "../../API/requests";
-import useFetching from "../../hooks/useFetching";
+import { useCallback } from "react";
+import { baseURL } from "../../api";
+import useFetch from "../../hooks/useFetch";
+import { serviceGetCredits } from "../../services";
+import ActorCardLoading from "../loading/ActorCardLoading";
 
 const ActorCard = ({ actor }) => {
   return (
@@ -8,7 +11,7 @@ const ActorCard = ({ actor }) => {
         {actor.profile_path ? (
           <img
             loading="lazy"
-            src={requests.baseURL + "w300" + actor.profile_path}
+            src={baseURL + "w300" + actor.profile_path}
             alt="tom"
           />
         ) : (
@@ -25,7 +28,6 @@ const ActorCard = ({ actor }) => {
                 clipRule="evenodd"
               />
             </svg>
-            
           </div>
         )}
       </div>
@@ -39,20 +41,28 @@ const ActorCard = ({ actor }) => {
 };
 
 const ActorsRow = ({ mediaType, id }) => {
-  const fetchURL = requests.fetchCredits(mediaType, id);
-  const { data: credits, loading } = useFetching(fetchURL);
+  const getActors = useCallback(
+    () => serviceGetCredits(mediaType, id),
+    [mediaType, id]
+  );
 
-  const cast = credits.cast;
+  const { data: credits, loading, error } = useFetch(getActors);
+
+  const cast = credits?.cast;
   return (
     <div>
       <h3 className="text-2xl font-bold py-6">Cast</h3>
       <div className="flex gap-4 pb-4 mb-4 overflow-x-scroll scroller">
-        {loading ? (
-          <p>Loading.....</p>
-        ) : (
+        {loading && [...Array(10)].map((_, i) => <ActorCardLoading key={i} />)}
+
+        {cast &&
           cast
             .slice(0, 10)
-            .map((actor) => <ActorCard key={actor.id} actor={actor} />)
+            .map((actor) => <ActorCard key={actor.id} actor={actor} />)}
+        {error && (
+          <div onClick={() => console.log(error)}>
+            Error fetching data. Click to log error
+          </div>
         )}
       </div>
     </div>

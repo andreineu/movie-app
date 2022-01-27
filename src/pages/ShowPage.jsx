@@ -1,37 +1,55 @@
+import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 
-import requests from "../API/requests";
-import useFetching from "../hooks/useFetching";
-
-import Show from "../components/Show/Show";
+import Show from "../components/show/Show";
 import ActorsRow from "../components/misc/ActorsRow";
 import MediaRow from "../components/misc/MediaRow";
-import Loading from "../components/loading/Loading";
+
+import { serviceGetTvShow, serviceGetRecommendations } from "../services";
+import useFetch from "../hooks/useFetch";
+import LoadingSpiner from "../components/loading/LoadingSpinner";
 
 const ShowPage = () => {
   let params = useParams();
   const id = params.movieID.split("-")[0];
-  const fetchUrl = requests.fetchDetails("tv", id);
 
-  const {data: show,loading} = useFetching(fetchUrl)
+  const getTvShow = useCallback(() => serviceGetTvShow(id), [id]);
+  const getRecommendations = useCallback(
+    () => serviceGetRecommendations("movie", id),
+    [id]
+  );
 
-  return loading ? (
-    <Loading />
-  ) : show ? (
+  const { data: tvShow, error, loading } = useFetch(getTvShow);
+  const {
+    data: recData,
+    error: recError,
+    loading: recLoading,
+  } = useFetch(getRecommendations);
+
+  return (
     <>
-      <Show show={show} />
-      <div className="site-container">
-        <ActorsRow mediaType="tv" id={id} />
-        <MediaRow
-          fetchUrl={requests.fetchRecommendations("tv", id)}
-          title="Recommendations"
-        />
-      </div>
+      {loading && <LoadingSpiner />}
+      {tvShow && (
+        <>
+          <Show show={tvShow} />
+          <div className="site-container">
+            <ActorsRow mediaType="tv" id={id} />
+            <MediaRow
+              data={recData?.results}
+              loading={recLoading}
+              error={recError}
+              title="Recommendations"
+            />
+          </div>
+        </>
+      )}
+
+      {error && (
+        <div onClick={() => console.log(error)}>
+          Error fetching data. Click to log error
+        </div>
+      )}
     </>
-  ) : (
-    <div onClick={() => console.log({ data: show, loading })}>
-      Error fetching data
-    </div>
   );
 };
 

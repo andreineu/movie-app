@@ -1,28 +1,26 @@
+import { formatMinutes } from "../../helpers";
 import RatingBadge from "../misc/RatingBadge";
 
 const MovieDetails = ({ movie }) => {
-  const genres = movie
-    ? movie.genres.map((genre) => genre.name).join(", ")
-    : "";
+  const genres = movie?.genres?.map((genre) => genre.name).join(", ");
+  const movieDuration = formatMinutes(movie?.runtime);
 
-  const movieDuration = movie.runtiime > 60 ? `${Math.floor(movie.runtime / 60)}h ${
-    movie.runtime % 60 
-  }m` : movie.runtime === 0 ? null : `${movie.runtime % 60}m`
-  
   return (
-    <div>
+    <div onClick={() => console.log(movie)}>
       <div className="flex flex-col gap-4">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <h1 className="font-bold text-4xl ">{movie.title}</h1>
-            { movie.release_date && <span className="text-3xl font-semibold text-gray-300">
-              ({movie.release_date ? movie.release_date.slice(0, 4) : ""})
-            </span> }
+            {movie.release_date && (
+              <span className="text-3xl font-semibold text-gray-300">
+                ({movie.release_date ? movie.release_date.slice(0, 4) : ""})
+              </span>
+            )}
           </div>
           <div className="flex space-x-4 text-sm text-gray-300">
-            { movie.release_date && <span>{movie.release_date}</span> }
-            <span onClick={()=>console.log(movie)}>{genres}</span>
-            { movieDuration && <span>{movieDuration}</span> }
+            {movie.release_date && <span>{movie.release_date}</span>}
+            <span onClick={() => console.log(movie)}>{genres}</span>
+            {movieDuration && <span>{movieDuration}</span>}
           </div>
         </div>
       </div>

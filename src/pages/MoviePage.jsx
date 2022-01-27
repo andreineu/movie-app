@@ -1,40 +1,53 @@
 import { useParams } from "react-router-dom";
 
-import requests from "../API/requests";
-import useFetching from "../hooks/useFetching";
-
-import Movie from "../components/Movie/Movie";
+import Movie from "../components/movie/Movie";
 import ActorsRow from "../components/misc/ActorsRow";
 import MediaRow from "../components/misc/MediaRow";
-import Loading from "../components/loading/Loading";
+
+import useFetch from "../hooks/useFetch";
+import { serviceGetMovie, serviceGetRecommendations } from "../services";
+import { useCallback } from "react";
+import LoadingSpiner from "../components/loading/LoadingSpinner";
 
 const MoviePage = () => {
   let params = useParams();
   const id = params.movieID.split("-")[0];
-  const fetchUrl = requests.fetchDetails("movie", id);
+  const getMovie = useCallback(() => serviceGetMovie(id), [id]);
+  const getRecommendations = useCallback(
+    () => serviceGetRecommendations("movie", id),
+    [id]
+  );
 
-  // const [isLoading, setIsLoading] = useState(true);
-  // const movie = useFetching(fetchUrl, setIsLoading);
+  const { data, error, loading } = useFetch(getMovie);
+  const {
+    data: recData,
+    error: recError,
+    loading: recLoading,
+  } = useFetch(getRecommendations);
 
-  const { data: movie, loading } = useFetching(fetchUrl);
-
-  return loading ? (
-    <Loading />
-  ) : movie ? (
+  return (
     <>
-      <Movie movie={movie} />
-      <div className="site-container">
-        <ActorsRow mediaType="movie" id={id} />
-        <MediaRow
-          fetchUrl={requests.fetchRecommendations("movie", id)}
-          title="Recommendations"
-        />
-      </div>      
+      {loading && <LoadingSpiner />}
+      {data && (
+        <>
+          <Movie movie={data} />
+          <div className="site-container">
+            <ActorsRow mediaType="movie" id={id} />
+            <MediaRow
+              data={recData?.results}
+              loading={recLoading}
+              error={recError}
+              title="Recommendations"
+            />
+          </div>
+        </>
+      )}
+      {error && (
+        <div onClick={() => console.log(error)}>
+          Error fetching data. Click to log error
+        </div>
+      )}
     </>
-  ) : (
-    <div onClick={() => console.log({ data: movie, loading })}>
-      Error fetching data
-    </div>
   );
 };
 

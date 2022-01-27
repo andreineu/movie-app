@@ -1,14 +1,36 @@
 import MediaRow from "../components/misc/MediaRow";
-import requests from "../API/requests";
-import SearchBanner from "../components/Search/SearchBanner";
+
+import SearchBanner from "../components/search/SearchBanner";
+import useFetch from "../hooks/useFetch";
+import { serviceGetTopRated, serviceGetTrendingWeek } from "../services";
 
 const MainPage = () => {
+  const {
+    data: trendingData,
+    loading: trendingLoading,
+    error: trendingError,
+  } = useFetch(serviceGetTrendingWeek);
+
+  const {
+    data: topRatedData,
+    loading: topRatedLoading,
+    error: topRatedError,
+  } = useFetch(serviceGetTopRated);
   return (
     <div className="site-container">
-      {/* <Banner /> */}
       <SearchBanner />
-      <MediaRow fetchUrl={requests.fetchTopRated} title="Top rated" />
-      <MediaRow fetchUrl={requests.fetchTrending} title="Trending" />
+      <MediaRow
+        data={topRatedData?.results}
+        loading={topRatedLoading}
+        error={topRatedError}
+        title="Top rated"
+      />
+      <MediaRow
+        data={trendingData?.results}
+        loading={trendingLoading}
+        error={trendingError}
+        title="Trending"
+      />
     </div>
   );
 };

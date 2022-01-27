@@ -1,6 +1,6 @@
-import styles from "./Loading.module.css";
+import styles from "./LoadingSpinner.module.css";
 
-const Loading = () => {
+const LoadingSpinner = () => {
   return (
     <div className={styles["spinner-wrapper"]}>
       <svg viewBox="0 0 50 50" className={styles["spinner"]}>
@@ -11,4 +11,6 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+//moviepage searchpage showpage
+
+export default LoadingSpinner;

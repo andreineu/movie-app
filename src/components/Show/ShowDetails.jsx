@@ -1,8 +1,10 @@
+import { formatMinutes } from "../../helpers";
 import RatingBadge from "../misc/RatingBadge";
 
 const MovieDetails = ({ show }) => {
-  let genres = show ? show.genres.map((genre) => genre.name).join(", ") : "";
-  let showDuration = show.episode_run_time[0] > 60 ? `${Math.floor(show.episode_run_time[0]/60)}h ${show.episode_run_time[0] % 60}m` : show.episode_run_time + 'm'
+  const genres = show ? show.genres.map((genre) => genre.name).join(", ") : "";
+  const showDuration = formatMinutes(show.episode_run_time[0]);
+
   return (
     <div>
       <div className="flex flex-col gap-4">
