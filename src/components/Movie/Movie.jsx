@@ -1,13 +1,12 @@
+import { baseURL } from "../../api";
 import MovieDetails from "./MovieDetails";
 
 const Movie = ({ movie }) => {
-  const baseUrl = "https://www.themoviedb.org/t/p/original";
-
   return (
     <div
       className="w-full relative"
       style={{
-        backgroundImage: `url(${baseUrl + movie.backdrop_path})`,
+        backgroundImage: `url(${baseURL + " original" + movie.backdrop_path})`,
         backgroundPosition: "right -200px top",
         backgroundSize: "cover",
       }}
@@ -16,7 +15,7 @@ const Movie = ({ movie }) => {
         <div className="container mx-auto px-8 flex text-white">
           <img
             className="w-80 rounded-xl mr-8"
-            src={baseUrl + movie.poster_path}
+            src={baseURL + "original" + movie.poster_path}
             alt="movie_poster"
           />
           <MovieDetails movie={movie} />

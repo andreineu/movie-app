@@ -1,15 +1,18 @@
 import { useNavigate } from "react-router";
+import { makeUrl } from "../../helpers";
 
 const SearchItem = ({ searchItem, mediaType }) => {
   const baseUrl = "https://www.themoviedb.org/t/p/w154";
 
-  let cardUrl = `/movie/${searchItem.id}`;
-  if (mediaType === "tv") {
-    cardUrl = `/tv/${searchItem.id}`;
-  }
+  const title = searchItem.title || searchItem.name;
+  const releaseDate = searchItem.release_date || searchItem.first_air_date;
+  const overview = searchItem.overview;
+
+  const url = makeUrl(mediaType, searchItem.id, title);
+
   const navigate = useNavigate();
   const navigateHandler = () => {
-    navigate(cardUrl);
+    navigate(url);
   };
   return (
     <div
@@ -45,16 +48,10 @@ const SearchItem = ({ searchItem, mediaType }) => {
           className="font-bold text-xl hover:text-gray-500 cursor-pointer transition-colors"
           onClick={navigateHandler}
         >
-          {searchItem.title ? searchItem.title : searchItem.name}
+          {title}
         </h4>
-        <span className="text-gray-500 text-sm">
-          {searchItem.release_date
-            ? searchItem.release_date
-            : searchItem.first_air_date}
-        </span>
-        <p className="mt-6 text-clip overflow-hidden h-[120px] ">
-          {searchItem.overview}
-        </p>
+        <span className="text-gray-500 text-sm">{releaseDate}</span>
+        <p className="mt-6 text-clip overflow-hidden h-[120px] ">{overview}</p>
       </div>
     </div>
   );

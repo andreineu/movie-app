@@ -4,7 +4,6 @@ import RatingBadge from "../misc/RatingBadge";
 const MovieDetails = ({ show }) => {
   const genres = show ? show.genres.map((genre) => genre.name).join(", ") : "";
   const showDuration = formatMinutes(show.episode_run_time[0]);
-
   return (
     <div>
       <div className="flex flex-col gap-4">
