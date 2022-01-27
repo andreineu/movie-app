@@ -4,10 +4,12 @@ const base_api_url = "https://api.themoviedb.org/3";
 
 export const baseURL = "https://www.themoviedb.org/t/p/";
 
+const api_key
+
 const httpInstance = axios.create({
   baseURL: base_api_url,
   params: {
-    api_key: process.env.REACT_APP_TMDB_API_KEY,
+    api_key: api_key,
   },
 });
 
