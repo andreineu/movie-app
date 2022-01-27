@@ -8,7 +8,7 @@ const Show = ({ show }) => {
       onClick={() => console.log(show)}
       className="w-full relative"
       style={{
-        backgroundImage: `url(${baseURL}original/${show.backdrop_path})`,
+        backgroundImage: `url(${baseURL}original${show.backdrop_path})`,
 
         backgroundPosition: "right -200px top",
         backgroundSize: "cover",
@@ -18,7 +18,7 @@ const Show = ({ show }) => {
         <div className="container mx-auto px-8 flex text-white">
           <img
             className="w-80 rounded-xl mr-8"
-            src={baseUrl + show.poster_path}
+            src={baseURL + "original" + show.poster_path}
             alt={`${show.name} poster`}
           />
           <ShowDetails show={show} />
